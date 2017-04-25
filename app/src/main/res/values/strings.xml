@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BolseDeTreballIESJaumeIIElJust</string>
+    <string name="action_settings">Settings</string>
+    <string name="Inici">Inici</string>
+    <string name="LlistaDeOfertes">Llista de Ofertes</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_llista__ofertes">Llista_Ofertes</string>
+</resources>
