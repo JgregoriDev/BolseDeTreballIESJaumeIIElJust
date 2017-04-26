@@ -12,8 +12,7 @@
         <activity
             android:name=".MenuActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -27,7 +26,8 @@
         <activity
             android:name=".LlistaOfertesActivity"
             android:label="@string/title_activity_llista__ofertes"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".InsertarActivity"></activity>
     </application>
 
 </manifest>
