@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 
 public class LlistaOfertesActivity extends MenuActivity {
 
-    private Button b_afegir;
     private ListView listView;
     private SQLiteHelper sqLiteHelper;
     private SQLiteDatabase bd;
