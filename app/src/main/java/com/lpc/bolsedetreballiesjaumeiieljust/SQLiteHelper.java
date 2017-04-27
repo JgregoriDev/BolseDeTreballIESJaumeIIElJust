@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
+
 import java.util.ArrayList;
 
 /**
@@ -15,11 +17,11 @@ import java.util.ArrayList;
  */
 
 public class SQLiteHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "Ofertes";
-    private static final int DATABASE_VERSION = 4;
+    private static final String DATABASE_NAME = "OfertesTreball";
+    private static final int DATABASE_VERSION = 6;
 
 
-    public static final String Ofertes = "Ofertes";
+    public static final String Ofertes = "OfertesTreball";
     public static final String Nom = "Nom";
     public static final String Poblacio = "Poblacio";
     public static final String Email = "Email";
@@ -69,50 +71,55 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Log.d("Proba Insert", "Insert fet de manera correcta");
 //        Toast.makeText(context, "Has guardat el contingut", Toast.LENGTH_LONG).show();
     }
-    public ArrayList<String> cargarLv() {
-        ArrayList<String>lista=new ArrayList<>();
-        String sql="SELECT * FROM "+Ofertes;
+
+    public ArrayList<OfertesTreball> cargarLv() {
+        ArrayList<OfertesTreball> lista = new ArrayList<>();
+        String sql = "SELECT * FROM " + Ofertes;
         SQLiteDatabase db = getWritableDatabase();
         Cursor c = db.rawQuery(sql, null);
 
-
+        OfertesTreball ot;
         if (c.moveToFirst()) {
             do {
-                String nom=c.getString(0);
-                String descripcio=c.getString(5);
-
-                lista.add(nom+"_"+descripcio);
-                //textResultado.append(id+" "+nom+" "+direccio+"\n");
-                Log.d("SELECT",""+nom+" "+descripcio);
-            }while (c.moveToNext());
+                String nom = c.getString(0);
+                String Email = c.getString(1);
+                String Poblacio = c.getString(2);
+                String Requeriments = c.getString(3);
+                String Data = c.getString(4);
+                String Descripcio = c.getString(5);
+                ot = new OfertesTreball(nom, Email, Poblacio, Requeriments, Data, Descripcio);
+                lista.add(ot);
+            } while (c.moveToNext());
         }
-        if(lista.isEmpty()){
+        if (lista.isEmpty()) {
             return null;
-        }else{
+        } else {
             return lista;
         }
 
     }
-    public ArrayList<String> cargarLv(String Requisits) {
-        ArrayList<String>lista=new ArrayList<>();
-        String sql="SELECT * FROM "+Ofertes+" WHERE "+Requerirements+"="+Requisits;
+
+    public ArrayList<OfertesTreball> cargarLv(String Requisits) {
+        ArrayList<OfertesTreball> lista = new ArrayList<>();
+        String sql = "SELECT * FROM " + Ofertes + " WHERE " + Requerirements + "=" + Requisits;
         SQLiteDatabase db = getWritableDatabase();
         Cursor c = db.rawQuery(sql, null);
-
-
+        OfertesTreball ot;
         if (c.moveToFirst()) {
             do {
-                String nom=c.getString(0);
-                String descripcio=c.getString(5);
-
-                lista.add(nom+"_"+descripcio);
-                //textResultado.append(id+" "+nom+" "+direccio+"\n");
-                Log.d("SELECT",""+nom+" "+descripcio);
-            }while (c.moveToNext());
+                String nom = c.getString(0);
+                String Email = c.getString(1);
+                String Poblacio = c.getString(2);
+                String Requeriments = c.getString(3);
+                String Data = c.getString(4);
+                String Descripcio = c.getString(5);
+                ot = new OfertesTreball(nom, Email, Poblacio, Requeriments, Data, Descripcio);
+                lista.add(ot);
+            } while (c.moveToNext());
         }
-        if(lista.isEmpty()){
+        if (lista.isEmpty()) {
             return null;
-        }else{
+        } else {
             return lista;
         }
 

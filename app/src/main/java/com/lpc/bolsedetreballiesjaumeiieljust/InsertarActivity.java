@@ -80,15 +80,29 @@ public class InsertarActivity extends MenuActivity {
                 requisits = cb_dam.getText().toString() + "+" + cb_asix.getText().toString();
             }
 
-            sqLiteHelper.Insertar(ed_nom.getText().toString(),
+            Insertar(ed_nom.getText().toString(),
                     ed_email.getText().toString(), ed_poblacio.getText().toString(),
                     requisits,
                     ed_data.getText().toString(), ed_Descripcio.getText().toString());
             //Log.d("Proba Insert", "Insert fet de manera correcta");
             Toast.makeText(getApplicationContext(), "Has guardat el contingut", Toast.LENGTH_LONG).show();
 
+            startActivity(new Intent(InsertarActivity.this, LlistaOfertesActivity.class));
         }
-        startActivity(new Intent(InsertarActivity.this, LlistaOfertesActivity.class));
+    }
+    public void Insertar(String nom, String email, String poblacio, String requeriments, String dataNotificacio, String descripcio) {
+        SQLiteDatabase bd = sqLiteHelper.getWritableDatabase();
+        ContentValues registro = new ContentValues();
+        registro.put(Nom, nom);
+        registro.put(Email, email);
+        registro.put(Poblacio, poblacio);
+        registro.put(Requerirements, requeriments);
+        registro.put(DataNotificacio, dataNotificacio);
+        registro.put(Descripcio, Descripcio);
+
+        bd.insert(Ofertes, null, registro);
+        Log.d("Proba Insert", "Insert fet de manera correcta");
+//        Toast.makeText(context, "Has guardat el contingut", Toast.LENGTH_LONG).show();
     }
 
 }

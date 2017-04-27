@@ -13,6 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
 
 import java.util.ArrayList;
 
@@ -22,8 +25,8 @@ public class LlistaOfertesActivity extends MenuActivity {
     private SQLiteHelper sqLiteHelper;
     private SQLiteDatabase bd;
     private CheckBox cb_dam,cb_asix;
-    ArrayList<String> list;
-    ArrayAdapter adaptador;
+    private ArrayList<OfertesTreball> list;
+    private ArrayAdapter adaptador;
     boolean bandera;
     private ArrayList<String> listData;
     private TextView textResultado;
@@ -43,34 +46,38 @@ public class LlistaOfertesActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
+
         bandera=false;
+        listView = (ListView) findViewById(R.id.listView);
         cb_dam=(CheckBox)findViewById(R.id.cb_dam);
         cb_asix=(CheckBox)findViewById(R.id.cb_asix);
         String requisits=null;
-        if (cb_dam.isChecked() && !cb_asix.isChecked()) {
-            requisits = cb_dam.getText().toString();
-            bandera=true;
-        }
-        if (!cb_dam.isChecked() && cb_asix.isChecked()) {
-            requisits = cb_asix.getText().toString();
-            bandera=true;
-        }
-        if (cb_dam.isChecked() && cb_asix.isChecked()) {
-            requisits = cb_dam.getText().toString() + "+" + cb_asix.getText().toString();
-            bandera=true;
-        }
-        if(bandera){
-            if(requisits!=null){
-                CargarLVFiltrat(requisits);
-            }
-        }else{
-            CargarLV();
-        }
-
-        textResultado= (TextView) findViewById(R.id.tv_llistabd);
         sqLiteHelper=new SQLiteHelper(getApplicationContext());
-        bd=sqLiteHelper.getWritableDatabase();
-        //listView = (ListView) findViewById(R.id.listView);
+        //CargarLV();
+//        if (cb_dam.isChecked() && !cb_asix.isChecked()) {
+//            requisits = cb_dam.getText().toString();
+//            bandera=true;
+//        }
+//        if (!cb_dam.isChecked() && cb_asix.isChecked()) {
+//            requisits = cb_asix.getText().toString();
+//            bandera=true;
+//        }
+//        if (cb_dam.isChecked() && cb_asix.isChecked()) {
+//            requisits = cb_dam.getText().toString() + "+" + cb_asix.getText().toString();
+//            bandera=true;
+//        }
+//        if(bandera){
+//            if(requisits!=null){
+//                CargarLVFiltrat(requisits);
+//            }
+//        }else{
+//            CargarLV();
+//        }
+
+        //CargarLV();
+        //textResultado= (TextView) findViewById(R.id.tv_llistabd);
+
+        //bd=sqLiteHelper.getWritableDatabase();
 //        Cargar();
 
 
@@ -78,40 +85,29 @@ public class LlistaOfertesActivity extends MenuActivity {
     }
 
     private void CargarLV(){
-
         list=sqLiteHelper.cargarLv();
-        if(list!=null){
-            adaptador=new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,list);
-            listView.setAdapter(adaptador);
-        }else{
-            Log.d("ListView error","Es null");
-        }
+//        for (OfertesTreball ot:list) {
+//            Log.d("Número ",""+ot.getNom());
+//        }
+//        if(!list.isEmpty()){
+            //adaptador=new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,list);
+            //listView.setAdapter(adaptador);
+            //Toast.makeText(this,"Rellenando campos",Toast.LENGTH_SHORT).show();
+//        }else{
+//            Log.d("ListView error","Es null");
+//        }
 
     }
-    private void CargarLVFiltrat(String requisits){
+//    private void CargarLVFiltrat(String requisits){
+//
+//        list=sqLiteHelper.cargarLv(requisits);
+//        if(list!=null){
+//            adaptador=new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,list);
+//            listView.setAdapter(adaptador);
+//        }else{
+//            Log.d("ListView error","Es null");
+//        }
+//    }
 
-        list=sqLiteHelper.cargarLv(requisits);
-        if(list!=null){
-            adaptador=new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,list);
-            listView.setAdapter(adaptador);
-        }else{
-            Log.d("ListView error","Es null");
-        }
-    }
-  /*  private void Cargar(){
-        String sql="SELECT * FROM Ofertes";
-        Cursor c = bd.rawQuery(sql, null);
-
-        textResultado.setText("");
-        if (c.moveToFirst()) {
-            do {
-                String id=c.getString(0);
-                String nom=c.getString(1);
-                String direccio=c.getString(2);
-                textResultado.append(id+nom+direccio+"\n");
-                Log.d("Proba","TextView Cargado");
-            }while (c.moveToNext());
-        }
-    }*/
 
 }
