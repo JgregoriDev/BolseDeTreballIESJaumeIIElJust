@@ -11,13 +11,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
+
 import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.DataNotificacio;
 import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.Descripcio;
 import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.Email;
 import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.Nom;
-import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.Ofertes;
+import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.NomTabla;
 import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.Poblacio;
-import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.Requerirements;
+import static com.lpc.bolsedetreballiesjaumeiieljust.SQLiteHelper.Cicle;
 
 
 public class InsertarActivity extends MenuActivity {
@@ -30,7 +32,7 @@ public class InsertarActivity extends MenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insertar);
-        sqLiteHelper = new SQLiteHelper(this);
+        sqLiteHelper = new SQLiteHelper(getApplicationContext());
         b_cancelar = (Button) findViewById(R.id.b_cancelar);
         b_guardar = (Button) findViewById(R.id.b_guardar);
         ed_nom = (EditText) findViewById(R.id.et_nom);
@@ -53,6 +55,7 @@ public class InsertarActivity extends MenuActivity {
                 Cancelar();
             }
         });
+
     }
 
     private void Cancelar() {
@@ -65,30 +68,36 @@ public class InsertarActivity extends MenuActivity {
         if (!cb_dam.isChecked() && !cb_asix.isChecked()) {
             Toast.makeText(getApplicationContext(), "Has de seleccionar si vols de dam, de asix o dels dos", Toast.LENGTH_SHORT).show();
         } else {
-            SQLiteDatabase bd = sqLiteHelper.getWritableDatabase();
-            ContentValues registro = new ContentValues();
-            registro.put(Poblacio, ed_poblacio.getText().toString());
-            String requisits = "";
-            //Modificar el contingut del checkbox segons el que tinga seleccionat
-            if (cb_dam.isChecked() && !cb_asix.isChecked()) {
-                requisits = cb_dam.getText().toString();
-            }
-            if (!cb_dam.isChecked() && cb_asix.isChecked()) {
-                requisits = cb_asix.getText().toString();
-            }
-            if (cb_dam.isChecked() && cb_asix.isChecked()) {
-                requisits = cb_dam.getText().toString() + "+" + cb_asix.getText().toString();
-            }
+            if (ed_nom.length() < 1 || ed_poblacio.length() < 1 || ed_Descripcio.length() < 1 || ed_poblacio.length() < 1 || ed_email.length() < 1) {
+                Toast.makeText(getApplicationContext(), "Has de rellenar tots els camps", Toast.LENGTH_SHORT).show();
+            } else {
+                String cicle = condicions();
+                OfertesTreball ofertesTreball = new OfertesTreball(ed_nom.getText().toString(),
+                        ed_poblacio.getText().toString(), ed_email.getText().toString(),
+                        cicle,
+                        ed_data.getText().toString(), ed_Descripcio.getText().toString());
+                sqLiteHelper.Insertar(ofertesTreball);
 
-            sqLiteHelper.Insertar(ed_nom.getText().toString(),
-                    ed_email.getText().toString(), ed_poblacio.getText().toString(),
-                    requisits,
-                    ed_data.getText().toString(), ed_Descripcio.getText().toString());
-            //Log.d("Proba Insert", "Insert fet de manera correcta");
-            Toast.makeText(getApplicationContext(), "Has guardat el contingut", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Has guardat el contingut", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(InsertarActivity.this, LlistaOfertesActivity.class));
+            }
+        }
+    }
+
+    private String condicions() {
+        String cicle = "";
+        //Modificar el contingut del checkbox segons el que tinga seleccionat
+        if (cb_dam.isChecked() && !cb_asix.isChecked()) {
+            cicle = cb_dam.getText().toString();
+        }
+        if (!cb_dam.isChecked() && cb_asix.isChecked()) {
+            cicle = cb_asix.getText().toString();
 
         }
-        startActivity(new Intent(InsertarActivity.this, LlistaOfertesActivity.class));
+        if (cb_dam.isChecked() && cb_asix.isChecked()) {
+            cicle = cb_dam.getText().toString() + "+" + cb_asix.getText().toString();
+        }
+        return cicle;
     }
 
 }

@@ -6,13 +6,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
-public class MainActivity extends MenuActivity {
-
+public class ListViewActivity extends MenuActivity {
+    TextView tv_nom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_list_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -24,7 +25,20 @@ public class MainActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
-        SQLiteHelper sqLiteHelper=new SQLiteHelper(getApplicationContext());
+        tv_nom=(TextView)findViewById(R.id.tv_nom);
+        Bundle bundle=getIntent().getExtras();
+        String bundleString=bundle.getString("Nom");
+        String[]parts=bundleString.split(" ");
+        String codi=parts[0];
+        String nom=parts[1];
+        String Email=parts[2];
+        String Cicle=parts[3];
+        String Descripcio=parts[4];
+
+            tv_nom.setText(codi+" "+nom+" "+" "+Email+" "+Cicle+" "+Descripcio);
+//        for (int i=0;i<parts.length;i++) {
+//            tv_nom.append(parts[i]+" ");
+//        }
     }
 
 }

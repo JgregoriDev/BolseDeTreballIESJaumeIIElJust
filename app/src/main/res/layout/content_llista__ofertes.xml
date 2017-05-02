@@ -24,18 +24,18 @@
         android:orientation="horizontal">
 
         <CheckBox
-            android:id="@+id/cb_DAM"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="DAM" />
-
-        <CheckBox
             android:id="@+id/cb_asix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="ASIX" />
+
+        <CheckBox
+            android:id="@+id/cb_dam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DAM" />
     </LinearLayout>
 
     <RelativeLayout

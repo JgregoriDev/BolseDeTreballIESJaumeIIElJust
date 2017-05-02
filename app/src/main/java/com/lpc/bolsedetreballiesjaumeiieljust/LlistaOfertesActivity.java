@@ -1,18 +1,21 @@
 package com.lpc.bolsedetreballiesjaumeiieljust;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
 
 import java.util.ArrayList;
 
@@ -22,12 +25,10 @@ public class LlistaOfertesActivity extends MenuActivity {
     private SQLiteHelper sqLiteHelper;
     private SQLiteDatabase bd;
     private CheckBox cb_dam,cb_asix;
-    ArrayList<String> list;
-    ArrayAdapter adaptador;
-    boolean bandera;
-    private ArrayList<String> listData;
-    private TextView textResultado;
-
+//    private ArrayList<OfertesTreball> llista;
+    private ArrayList<String> llista;
+    private ArrayAdapter adaptador;
+    private String condicio="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,75 +44,68 @@ public class LlistaOfertesActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
-        bandera=false;
+
+
+        sqLiteHelper=new SQLiteHelper(getApplicationContext());
+        listView = (ListView) findViewById(R.id.listView);
         cb_dam=(CheckBox)findViewById(R.id.cb_dam);
         cb_asix=(CheckBox)findViewById(R.id.cb_asix);
-        String requisits=null;
-        if (cb_dam.isChecked() && !cb_asix.isChecked()) {
-            requisits = cb_dam.getText().toString();
-            bandera=true;
-        }
-        if (!cb_dam.isChecked() && cb_asix.isChecked()) {
-            requisits = cb_asix.getText().toString();
-            bandera=true;
-        }
-        if (cb_dam.isChecked() && cb_asix.isChecked()) {
-            requisits = cb_dam.getText().toString() + "+" + cb_asix.getText().toString();
-            bandera=true;
-        }
-        if(bandera){
-            if(requisits!=null){
-                CargarLVFiltrat(requisits);
+        //llista=new ArrayList<OfertesTreball>();
+        OmplirArrayList();
+        /*if(llista==null){
+            //Toast.makeText(this,"No hi han elements en el Arraylist")
+
+        }*/
+        cb_dam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OmplirArrayList();
             }
-        }else{
-            CargarLV();
-        }
-
-        textResultado= (TextView) findViewById(R.id.tv_llistabd);
-        sqLiteHelper=new SQLiteHelper(getApplicationContext());
-        bd=sqLiteHelper.getWritableDatabase();
-        //listView = (ListView) findViewById(R.id.listView);
-//        Cargar();
-
+        });
+        cb_asix.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OmplirArrayList();
+            }
+        });
 
 
     }
 
-    private void CargarLV(){
+    private void OmplirArrayList(){
+        if(cb_dam.isChecked() && cb_asix.isChecked()){
+            condicio=" WHERE Cicle='DAM+ASIX';";
+        }
+        else{
+            condicio=";";
 
-        list=sqLiteHelper.cargarLv();
-        if(list!=null){
-            adaptador=new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,list);
+        }
+        if(cb_dam.isChecked() && !cb_asix.isChecked()){
+            condicio=" WHERE Cicle='DAM';";
+        }
+        if(!cb_dam.isChecked() && cb_asix.isChecked()){
+            condicio=" WHERE Cicle='ASIX';";
+        }
+        llista =sqLiteHelper.cargarLv(condicio);
+        CarregarLV();
+    }
+    private void CarregarLV(){
+        if (llista==null) {
+            Log.d("Arraylist", "No disposes de elements en el arraylist");
+            Toast.makeText(getApplicationContext(),"No disposes de elements en el arraylist",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,MainActivity.class));
+        } else {
+            adaptador = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, llista);
             listView.setAdapter(adaptador);
-        }else{
-            Log.d("ListView error","Es null");
         }
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(LlistaOfertesActivity.this, ListViewActivity.class);
+                intent.putExtra("Nom", listView.getItemAtPosition(position).toString());
+                startActivity(intent);
+            }
+        });
     }
-    private void CargarLVFiltrat(String requisits){
-
-        list=sqLiteHelper.cargarLv(requisits);
-        if(list!=null){
-            adaptador=new ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,list);
-            listView.setAdapter(adaptador);
-        }else{
-            Log.d("ListView error","Es null");
-        }
-    }
-  /*  private void Cargar(){
-        String sql="SELECT * FROM Ofertes";
-        Cursor c = bd.rawQuery(sql, null);
-
-        textResultado.setText("");
-        if (c.moveToFirst()) {
-            do {
-                String id=c.getString(0);
-                String nom=c.getString(1);
-                String direccio=c.getString(2);
-                textResultado.append(id+nom+direccio+"\n");
-                Log.d("Proba","TextView Cargado");
-            }while (c.moveToNext());
-        }
-    }*/
 
 }

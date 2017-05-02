@@ -12,7 +12,7 @@
         <activity
             android:name=".MenuActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -27,7 +27,11 @@
             android:name=".LlistaOfertesActivity"
             android:label="@string/title_activity_llista__ofertes"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".InsertarActivity"></activity>
+        <activity android:name=".InsertarActivity" />
+        <activity
+            android:name=".ListViewActivity"
+            android:label="@string/title_activity_list_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

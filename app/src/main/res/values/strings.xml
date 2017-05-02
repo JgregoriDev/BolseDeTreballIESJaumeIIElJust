@@ -3,7 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="Inici">Inici</string>
     <string name="LlistaDeOfertes">Llista de Ofertes</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Jaume II El Just</string>
     <string name="title_activity_llista__ofertes">Llista_Ofertes</string>
     <string name="Insertar">Insertar</string>
+    <string name="title_activity_list_view">ListViewActivity</string>
 </resources>
