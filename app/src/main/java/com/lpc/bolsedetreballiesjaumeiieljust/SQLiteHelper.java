@@ -34,7 +34,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             Email + " TEXT," +
             Poblacio + " TEXT," +
             Cicle + " TEXT," +
-            //DataNotificacio + "TEXT," +
+            DataNotificacio + " TEXT," +
             Descripcio + " TEXT" +
             ");";
 
@@ -46,7 +46,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(sql);
         Log.d(TAG, "Proba Creació " + sql);
-//        db.execSQL("INSERT INTO "+NomTabla+"("+Nom+") VALUES ('Ramon');");
 
     }
 
@@ -64,7 +63,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         registro.put(Email, ot.getEmail());
         registro.put(Poblacio, ot.getPoblacio());
         registro.put(Cicle, ot.getCicle());
-        //registro.put(DataNotificacio, ot.getDescripcio());
+        registro.put(DataNotificacio, ot.getDataNotificacio());
         registro.put(Descripcio, ot.getDescripcio());
 
         bd.insert(NomTabla, null, registro);
@@ -84,11 +83,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 String Email = c.getString(2);
                 String Poblacio = c.getString(3);
                 String Cicle = c.getString(4);
-                //String Data = c.getString(5);
-                String Descripcio = c.getString(5);
-                OfertesTreball ot = new OfertesTreball(nom, Email, Poblacio, Cicle ,Descripcio);
+                String Data = c.getString(5);
+                String Descripcio = c.getString(6);
+                OfertesTreball ot = new OfertesTreball(nom, Poblacio,Email, Cicle,Data,Descripcio);
                 ot.setCodi(codi);
-                llista.add(ot.getCodi()+" "+ot.getNom()+" "+ot.getPoblacio()+" "+ot.getCicle()+" "+ot.getDescripcio());
+                llista.add(ot.getCodi()+" "+ot.getNom()+" "+ot.getEmail()+" "+ot.getDataNotificacio()+" "+ot.getPoblacio()+" "+ot.getCicle()+" "+ot.getDescripcio());
             } while (c.moveToNext());
         }
         if (llista.isEmpty()) {

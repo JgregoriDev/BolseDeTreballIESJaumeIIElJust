@@ -36,6 +36,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="DAM" />
+
+        <Button
+            android:id="@+id/b_clear"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/filter_del"
+            android:text=" "
+            android:visibility="visible" />
+
     </LinearLayout>
 
     <RelativeLayout

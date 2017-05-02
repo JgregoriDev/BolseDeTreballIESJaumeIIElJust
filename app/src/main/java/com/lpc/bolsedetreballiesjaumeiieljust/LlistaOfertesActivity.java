@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class LlistaOfertesActivity extends MenuActivity {
     private ListView listView;
     private SQLiteHelper sqLiteHelper;
     private SQLiteDatabase bd;
+    private Button b_clear;
     private CheckBox cb_dam,cb_asix;
 //    private ArrayList<OfertesTreball> llista;
     private ArrayList<String> llista;
@@ -50,12 +52,17 @@ public class LlistaOfertesActivity extends MenuActivity {
         listView = (ListView) findViewById(R.id.listView);
         cb_dam=(CheckBox)findViewById(R.id.cb_dam);
         cb_asix=(CheckBox)findViewById(R.id.cb_asix);
-        //llista=new ArrayList<OfertesTreball>();
-        OmplirArrayList();
-        /*if(llista==null){
-            //Toast.makeText(this,"No hi han elements en el Arraylist")
+        b_clear= (Button) findViewById(R.id.b_clear);
 
-        }*/
+        OmplirArrayList();
+        b_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cb_dam.setChecked(false);
+                cb_asix.setChecked(false);
+                OmplirArrayList();
+            }
+        });
         cb_dam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +75,14 @@ public class LlistaOfertesActivity extends MenuActivity {
                 OmplirArrayList();
             }
         });
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(LlistaOfertesActivity.this, ListViewActivity.class);
+                intent.putExtra("Nom", listView.getItemAtPosition(position).toString());
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -91,21 +105,14 @@ public class LlistaOfertesActivity extends MenuActivity {
     }
     private void CarregarLV(){
         if (llista==null) {
-            Log.d("Arraylist", "No disposes de elements en el arraylist");
-            Toast.makeText(getApplicationContext(),"No disposes de elements en el arraylist",Toast.LENGTH_SHORT).show();
+            Log.d("Arraylist", "No disposes de elements en la llista");
+            Toast.makeText(getApplicationContext(),"No disposes de registres en la llista",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,MainActivity.class));
         } else {
             adaptador = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, llista);
             listView.setAdapter(adaptador);
         }
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LlistaOfertesActivity.this, ListViewActivity.class);
-                intent.putExtra("Nom", listView.getItemAtPosition(position).toString());
-                startActivity(intent);
-            }
-        });
+
     }
 
 }

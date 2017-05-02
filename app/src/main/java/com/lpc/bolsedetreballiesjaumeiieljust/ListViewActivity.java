@@ -34,7 +34,7 @@ public class ListViewActivity extends MenuActivity {
         String Email=parts[2];
         String Cicle=parts[3];
         String Descripcio=parts[4];
-
+//        String Data=parts[5];
             tv_nom.setText(codi+" "+nom+" "+" "+Email+" "+Cicle+" "+Descripcio);
 //        for (int i=0;i<parts.length;i++) {
 //            tv_nom.append(parts[i]+" ");
