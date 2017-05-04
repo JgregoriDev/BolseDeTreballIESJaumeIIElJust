@@ -16,8 +16,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
-
 import java.util.ArrayList;
 
 public class LlistaOfertesActivity extends MenuActivity {
@@ -78,8 +76,9 @@ public class LlistaOfertesActivity extends MenuActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LlistaOfertesActivity.this, ListViewActivity.class);
+                Intent intent = new Intent(LlistaOfertesActivity.this, DadesOfertaActivity.class);
                 intent.putExtra("Nom", listView.getItemAtPosition(position).toString());
+                intent.putExtra("Activity","LlistaOfertesActivity.class");
                 startActivity(intent);
             }
         });

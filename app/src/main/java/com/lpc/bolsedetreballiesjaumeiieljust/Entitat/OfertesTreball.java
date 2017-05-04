@@ -21,16 +21,28 @@ public class OfertesTreball {
     private String Cicle;
     private String DataNotificacio;
     private String Descripcio;
+    private String Telefono;
+
+    public String getTelefono() {
+        return Telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        Telefono = telefono;
+    }
 
     public OfertesTreball() {
     }
 
-    public OfertesTreball(String nom, String poblacio, String email, String cicle, String descripcio) {
+    public OfertesTreball(String nom, String poblacio, String email, String cicle, String dataNotificacio, String descripcio, String telefono) {
+
         Nom = nom;
         Poblacio = poblacio;
         Email = email;
         Cicle = cicle;
+        DataNotificacio = dataNotificacio;
         Descripcio = descripcio;
+        Telefono = telefono;
     }
 
     public OfertesTreball(String nom, String poblacio, String email, String cicle, String dataNotificacio, String descripcio) {

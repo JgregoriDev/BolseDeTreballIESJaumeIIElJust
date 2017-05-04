@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lpc.bolsedetreballiesjaumeiieljust">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -32,19 +32,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".InsertarActivity" />
         <activity
-            android:name=".ListViewActivity"
+            android:name=".DadesOfertaActivity"
             android:label="@string/title_activity_list_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <service
-            android:name=".MyAndroidFirebaseMsgService">
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".MyAndroidFirebaseMsgService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".MyAndroidFirebaseInstanceIdService">
+        <service android:name=".MyAndroidFirebaseInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

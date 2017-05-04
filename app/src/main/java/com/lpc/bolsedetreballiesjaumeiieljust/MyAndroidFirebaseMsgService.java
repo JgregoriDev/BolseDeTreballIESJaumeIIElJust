@@ -29,9 +29,9 @@ public class MyAndroidFirebaseMsgService extends FirebaseMessagingService {
     private void createNotification(String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        for (String key : campsMissatge.keySet()) { // Adding the information to the intent
-//            intent.putExtra(key, campsMissatge.get(key) );
-//        }
+        /*for (String key : campsMissatge.keySet()) { // Adding the information to the intent
+            intent.putExtra(key, campsMissatge.get(key) );
+        }*/
         PendingIntent resultIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
