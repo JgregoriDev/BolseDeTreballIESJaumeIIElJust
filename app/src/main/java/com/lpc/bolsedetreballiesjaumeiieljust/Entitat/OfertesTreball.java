@@ -1,11 +1,16 @@
 package com.lpc.bolsedetreballiesjaumeiieljust.Entitat;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by lpc on 27/04/17.
  */
 
-public class OfertesTreball {
+public class OfertesTreball implements Parcelable {
     private int Codi;
+
+
 
     public int getCodi() {
         return Codi;
@@ -23,13 +28,6 @@ public class OfertesTreball {
     private String Descripcio;
     private String Telefono;
 
-    public String getTelefono() {
-        return Telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        Telefono = telefono;
-    }
 
     public OfertesTreball() {
     }
@@ -53,6 +51,15 @@ public class OfertesTreball {
         DataNotificacio = dataNotificacio;
         Descripcio = descripcio;
     }
+
+    public String getTelefono() {
+        return Telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        Telefono = telefono;
+    }
+
 
 
     public String getNom() {
@@ -102,4 +109,46 @@ public class OfertesTreball {
     public void setDescripcio(String descripcio) {
         Descripcio = descripcio;
     }
+
+
+    protected OfertesTreball(Parcel in) {
+        Codi = in.readInt();
+        Nom = in.readString();
+        Poblacio = in.readString();
+        Email = in.readString();
+        Cicle = in.readString();
+        DataNotificacio = in.readString();
+        Descripcio = in.readString();
+        Telefono = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(Codi);
+        dest.writeString(Nom);
+        dest.writeString(Poblacio);
+        dest.writeString(Email);
+        dest.writeString(Cicle);
+        dest.writeString(DataNotificacio);
+        dest.writeString(Descripcio);
+        dest.writeString(Telefono);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<OfertesTreball> CREATOR = new Parcelable.Creator<OfertesTreball>() {
+        @Override
+        public OfertesTreball createFromParcel(Parcel in) {
+            return new OfertesTreball(in);
+        }
+
+        @Override
+        public OfertesTreball[] newArray(int size) {
+            return new OfertesTreball[size];
+        }
+    };
 }

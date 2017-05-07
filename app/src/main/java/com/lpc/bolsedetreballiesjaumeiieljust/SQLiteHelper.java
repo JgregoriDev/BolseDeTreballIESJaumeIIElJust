@@ -76,11 +76,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         registro.put(Descripcio, ot.getDescripcio());
 
         bd.insert(NomTabla, null, registro);
-        Log.d(TAG, "Insert fet de manera correcta en SQLITE");
+        Log.d("Jack", "Insert fet de manera correcta en SQLITE Nom"+ot.getNom()+" Email"+ot.getEmail()+"Telefono"+ot.getTelefono()+" Poblacio"+ot.getPoblacio()+" Cicle"+ot.getCicle()+" Descripcio"+ot.getDescripcio());
+//        Log.d(TAG, "Insert fet de manera correcta en SQLITE");
         InsertarValorsFirebase(ot);
     }
 
-    public ArrayList<String> cargarLv(String Condicio) {
+    public ArrayList<String> cargarLv(String Condicio, ArrayList<OfertesTreball> lo) {
         ArrayList<String> llista = new ArrayList<>();
         String sql = "SELECT * FROM " + NomTabla + Condicio;
         SQLiteDatabase db = getWritableDatabase();
@@ -96,14 +97,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 String Cicle = c.getString(5);
                 String Data = c.getString(6);
                 String Descripcio = c.getString(7);
-                OfertesTreball ot = new OfertesTreball(nom, Poblacio, Email, Cicle, Data, Descripcio,Telefon);
+                OfertesTreball ot = new OfertesTreball(nom, Poblacio, Email, Cicle, Data, Descripcio, Telefon);
                 ot.setCodi(codi);
                 ot.setTelefono(Telefono);
+//                llista.add(ot.getCodi() + "_" + ot.getNom());
+                llista.add(ot.getCodi() + "_" + ot.getNom() + "_" + ot.getEmail() + "_" + ot.getTelefono() +
+                        "_" + ot.getPoblacio() + "_" + ot.getCicle() + "_" + ot.getDataNotificacio() +
+                        "_" + ot.getDescripcio());
 
-                llista.add(ot.getCodi() + " " + ot.getNom() + " " + ot.getEmail() + " " + ot.getTelefono() +
-                        " " + ot.getDataNotificacio() + " " + ot.getPoblacio() + " " + ot.getCicle() +
-                        " " + ot.getDescripcio()
-                );
             } while (c.moveToNext());
         }
         if (llista.isEmpty()) {
@@ -115,35 +116,38 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return llista;
         }
     }
+
     public int ObtindreCodi(String nom) {
-        String sql = "SELECT Codi FROM " + NomTabla +" WHERE "+Nom+"='"+nom+"';";
+        String sql = "SELECT Codi FROM " + NomTabla + " WHERE " + Nom + "='" + nom + "';";
         SQLiteDatabase db = getWritableDatabase();
         Cursor c = db.rawQuery(sql, null);
         return c.getInt(1);
     }
-    private void InsertarValorsFirebase(OfertesTreball ot){
-        FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference=firebaseDatabase.getReference().child("OfertaTreball");
-        HashMap<String,String> hashMap=new HashMap<>();
-        String codi=String.valueOf(ot.getCodi());
-        hashMap.put(Codi,codi);
-        hashMap.put(Nom,ot.getNom());
-        hashMap.put(Telefon,ot.getTelefono());
-        hashMap.put(Poblacio,ot.getPoblacio());
-        hashMap.put(Cicle,ot.getCicle());
-        hashMap.put(DataNotificacio,ot.getCicle());
-        hashMap.put(Descripcio,ot.getDescripcio());
+
+    private void InsertarValorsFirebase(OfertesTreball ot) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("OfertaTreball");
+        HashMap<String, String> hashMap = new HashMap<>();
+        String codi = String.valueOf(ot.getCodi());
+        hashMap.put(Codi, codi);
+        hashMap.put(Nom, ot.getNom());
+        hashMap.put(Telefon, ot.getTelefono());
+        hashMap.put(Poblacio, ot.getPoblacio());
+        hashMap.put(Cicle, ot.getCicle());
+        hashMap.put(DataNotificacio, ot.getCicle());
+        hashMap.put(Descripcio, ot.getDescripcio());
         databaseReference.push().setValue(hashMap);
-        Log.d("SQL","Inserció a Firebase Exitosa");
+        Log.d("SQL", "Inserció a Firebase Exitosa");
     }
-    private void LlegirValorsFirebase(OfertesTreball ot){
-        FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference=firebaseDatabase.getReference().child("OfertaTreball");
+
+    private void LlegirValorsFirebase(OfertesTreball ot) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("OfertaTreball");
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String valor=dataSnapshot.getValue(String.class);
-                
+                String valor = dataSnapshot.getValue(String.class);
+
             }
 
             @Override

@@ -10,8 +10,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends MenuActivity {
-    TextView text;
+//    TextView text;
+    private OfertesTreball ot;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,29 +36,74 @@ public class MainActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
-        String conf="";
+        String conf = "";
         SQLiteHelper sqLiteHelper = new SQLiteHelper(getApplicationContext());
-        text= (TextView) findViewById(R.id.tv);
+      /*  text = (TextView) findViewById(R.id.tv);
         text.setText("");
-/*
-        int n=sqLiteHelper.ObtindreCodi("Jan");
-        Toast.makeText(this,""+n,Toast.LENGTH_SHORT).show();
-*/
-        if(getIntent().getExtras()!=null){
-            for (String key:getIntent().getExtras().keySet()){
-                String value=getIntent().getExtras().getString(key);
+//*/
+        if (getIntent().getExtras() != null) {
+            String Nom = null;
+            String Email = null;
+            String Poblacio = null;
+            String Telefono = null;
+            String Cicle = null;
+            String Descripcio = null;
+//            ot = new OfertesTreball();
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                if (key.equals("Nom")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
 
-                text.append("\n"+key +":"+value+"_");
+                    Nom = (String) value;
+//                    ot.setNom(nom);
+                }
+                if (key.equals("Email")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Email = (String) value;
+//                    ot.setEmail(Email);
+                }
+                if (key.equals("Poblacio")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Poblacio = (String) value;
+//                    ot.setPoblacio(Poblacio);
+                }
+                if (key.equals("Telefono")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Telefono = (String) value;
+//                    ot.setTelefono(Telefono);
+                }
+                if (key.equals("Cicle")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Cicle = (String) value;
+//                    ot.setCicle(Cicle);
+                }
+
+                if (key.equals("Descripcio")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Descripcio = (String) value;
+                    //ot.setDataNotificacio(Descripcio);
+                }
 
             }
-            Log.d("TAG", "Notificacion recibida");
-            Intent intent = new Intent(MainActivity.this, DadesOfertaActivity.class);
-            intent.putExtra("Nom", text.getText().toString());
-            Log.i("Activity",conf);
-            Toast.makeText(getApplicationContext(),conf,Toast.LENGTH_SHORT).show();
-            intent.putExtra("Activity","MainActivity.class");
+            if(Nom!=null){
+
+                Date date = Calendar.getInstance().getTime();
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String today = formatter.format(date);
+                ot = new OfertesTreball(Nom, Poblacio, Email, Cicle, today, Descripcio, Telefono);
+            }
+        }
+        if (ot != null) {
+
+
+            sqLiteHelper.Insertar(ot);
+            Intent intent = new Intent(MainActivity.this, LlistaOfertesActivity.class);
             startActivity(intent);
         }
-    }
 
+
+    }
 }
+
+
+

@@ -1,22 +1,31 @@
 package com.lpc.bolsedetreballiesjaumeiieljust;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
+
 public class DadesOfertaActivity extends MenuActivity {
-    TextView tv_nom;
+    private TextView tv_codi, tv_nom, tv_email, tv_telefon, tv_poblacio, tv_cicle, tv_data, tv_descripcio;
+
+
+    private String Email;
+    private String Telefono;
+    private OfertesTreball ot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_view);
+        setContentView(R.layout.activity_dades_oferta);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -29,34 +38,81 @@ public class DadesOfertaActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
+        tv_codi = (TextView) findViewById(R.id.tv_codi);
         tv_nom = (TextView) findViewById(R.id.tv_nom);
+        tv_email = (TextView) findViewById(R.id.tv_email);
+        tv_telefon = (TextView) findViewById(R.id.tv_telefon);
+        tv_poblacio = (TextView) findViewById(R.id.tv_poblacio);
+        tv_cicle = (TextView) findViewById(R.id.tv_cicle);
+        tv_data = (TextView) findViewById(R.id.tv_data);
+        tv_descripcio = (TextView) findViewById(R.id.tv_descripcio);
+
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String Activity = bundle.getString("Activity");
+            final String Activity = bundle.getString("Activity");
             if (Activity.equals("MainActivity.class")) {
+                tv_codi.setVisibility(View.INVISIBLE);
+                tv_email.setVisibility(View.INVISIBLE);
+                tv_telefon.setVisibility(View.INVISIBLE);
+                tv_cicle.setVisibility(View.INVISIBLE);
+                tv_data.setVisibility(View.INVISIBLE);
+                tv_poblacio.setVisibility(View.INVISIBLE);
+                tv_descripcio.setVisibility(View.INVISIBLE);
                 String bundleString = bundle.getString("Nom");
-                String []pba=bundleString.split("_");
 
-                for (String pb:pba){
-                    tv_nom.append("\n"+pb);
+
+            } else if (Activity.equals("LlistaOfertesActivity.class")) {
+                ot = bundle.getParcelable("OfertesTreball");
+                if (ot != null) {
+                    if (ot.getNom() != null) {
+
+
+                        tv_codi.append(": " + ot.getCodi());
+                        tv_nom.append(": " + ot.getNom());
+                        if (ot.getEmail() != null) {
+
+                            tv_email.append(": " + ot.getEmail());
+                            Email = ot.getEmail();
+                            tv_email.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    EnviarMail();
+                                }
+                            });
+                        }
+                        if (ot.getCicle() != null) {
+                            tv_cicle.append(": " + ot.getCicle());
+
+                        }
+                        if (ot.getTelefono() != null) {
+                            Telefono = ot.getTelefono();
+                            if(Telefono.equals("null")) {
+                                tv_telefon.append(": " + ot.getTelefono());
+                                tv_telefon.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        LlamarTelefono();
+                                    }
+                                });
+
+                            }
+                        }
+                        if (ot.getPoblacio() != null) {
+                            tv_poblacio.append(": " + ot.getPoblacio());
+                        }
+                        if (ot.getDescripcio() != null) {
+                            tv_descripcio.append("Descripcio: " + ot.getDescripcio());
+
+                        }
+
+                        tv_data.append(": " + ot.getDataNotificacio());
+
+                    }
                 }
 
-            } else if(Activity.equals("LlistaOfertesActivity.class")) {
 
-                String bundleString = bundle.getString("Nom");
-                String[] parts = bundleString.split(" ");
-
-                String codi = parts[0];
-                String nom = parts[1];
-                String Email = parts[2];
-                String Telefono = parts[3];
-                String Poblacio = parts[4];
-                String Cicle = parts[5];
-                String Descripcio = parts[6];
-                String Data = parts[7];
-
-                tv_nom.setText(codi + " " + nom + " " + " " + Email + " " + Telefono + " " + Poblacio + " " + Cicle + " " + Descripcio + " " + Data);
-            }else{
+            } else {
                 tv_nom.setText("No hi ha informació");
             }
         } else {
@@ -66,4 +122,23 @@ public class DadesOfertaActivity extends MenuActivity {
     }
 
 
+    public void LlamarTelefono() {
+        Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + ot.getTelefono()));
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startActivity(i);
+    }
+
+    public void EnviarMail() {
+        Intent sendEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", ot.getEmail(), null));
+        startActivity(Intent.createChooser(sendEmail, "Send email"));
+    }
 }

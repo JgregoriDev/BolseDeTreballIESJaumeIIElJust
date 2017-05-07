@@ -1,6 +1,7 @@
 package com.lpc.bolsedetreballiesjaumeiieljust;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,19 +17,26 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.ArrayOfertesTreballs;
+import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class LlistaOfertesActivity extends MenuActivity {
-
+    private ArrayList<OfertesTreball> llistaOfertes;
     private ListView listView;
     private SQLiteHelper sqLiteHelper;
     private SQLiteDatabase bd;
     private Button b_clear;
-    private CheckBox cb_dam,cb_asix;
-//    private ArrayList<OfertesTreball> llista;
+    private CheckBox cb_dam, cb_asix;
+    private int num;
+    private ArrayOfertesTreballs aot;
+    //    private ArrayList<OfertesTreball> llista;
     private ArrayList<String> llista;
     private ArrayAdapter adaptador;
-    private String condicio="";
+    private String condicio = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,13 +52,13 @@ public class LlistaOfertesActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
-        sqLiteHelper=new SQLiteHelper(getApplicationContext());
+        aot = new ArrayOfertesTreballs();
+        llistaOfertes = aot.getOfertesTreballs();
+        sqLiteHelper = new SQLiteHelper(getApplicationContext());
         listView = (ListView) findViewById(R.id.listView);
-        cb_dam=(CheckBox)findViewById(R.id.cb_dam);
-        cb_asix=(CheckBox)findViewById(R.id.cb_asix);
-        b_clear= (Button) findViewById(R.id.b_clear);
+        cb_dam = (CheckBox) findViewById(R.id.cb_dam);
+        cb_asix = (CheckBox) findViewById(R.id.cb_asix);
+        b_clear = (Button) findViewById(R.id.b_clear);
 
         OmplirArrayList();
         b_clear.setOnClickListener(new View.OnClickListener() {
@@ -76,42 +84,92 @@ public class LlistaOfertesActivity extends MenuActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LlistaOfertesActivity.this, DadesOfertaActivity.class);
-                intent.putExtra("Nom", listView.getItemAtPosition(position).toString());
-                intent.putExtra("Activity","LlistaOfertesActivity.class");
-                startActivity(intent);
+
+                //Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
+                String n = listView.getItemAtPosition(position).toString();
+                String[] arrayValorsOt = new String[8];
+                arrayValorsOt = n.split("_");
+
+                int codi = Integer.parseInt(arrayValorsOt[0]);
+                String nom = arrayValorsOt[1];
+                String email = arrayValorsOt[2];
+                String telefono = arrayValorsOt[3];
+                String poblacio = arrayValorsOt[4];
+                String cicle = arrayValorsOt[5];
+                String data = arrayValorsOt[6];
+                String descripcio = arrayValorsOt[7];
+                OfertesTreball ot = new OfertesTreball(nom, poblacio, email, cicle, data, descripcio, telefono);
+                ot.setCodi(codi);
+
+                Toast.makeText(getApplicationContext(),"Codi:"+codi+" Nom:"+nom+" Poblacio:"+poblacio+" Telefono:"+telefono+" Curs:"+cicle+" Data:"+data+" Descripcio:"+descripcio,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Codi:" + ot.getCodi() + " Nom:" + ot.getNom() + " Poblacio:" + ot.getPoblacio() + " Telefono:" + ot.getTelefono() + " Curs:" + ot.getCicle() + " Data:" + ot.getDataNotificacio() + " Descripcio:" + ot.getDescripcio(), Toast.LENGTH_SHORT).show();
+
+                if (ot == null) {
+                    Toast.makeText(getApplicationContext(), "Usuari incorrecte", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(LlistaOfertesActivity.this, DadesOfertaActivity.class);
+                    intent.putExtra("Nom", listView.getItemAtPosition(position).toString());
+                    intent.putExtra("OfertesTreball", ot);
+                    intent.putExtra("Activity", "LlistaOfertesActivity.class");
+                    startActivity(intent);
+                }
             }
         });
 
     }
 
-    private void OmplirArrayList(){
-        if(cb_dam.isChecked() && cb_asix.isChecked()){
-            condicio=" WHERE Cicle='DAM+ASIX';";
-        }
-        else{
-            condicio=";";
+    private void OmplirArrayList() {
+        if (cb_dam.isChecked() && cb_asix.isChecked()) {
+
+            condicio = " WHERE Cicle='DAM+ASIX' ORDER BY Codi DESC;";
+
+        } else {
+            condicio = " ORDER BY Codi DESC;";
 
         }
-        if(cb_dam.isChecked() && !cb_asix.isChecked()){
-            condicio=" WHERE Cicle='DAM';";
+        if (cb_dam.isChecked() && !cb_asix.isChecked()) {
+            condicio = " WHERE Cicle='DAM' ORDER BY Codi DESC;";
         }
-        if(!cb_dam.isChecked() && cb_asix.isChecked()){
-            condicio=" WHERE Cicle='ASIX';";
+        if (!cb_dam.isChecked() && cb_asix.isChecked()) {
+            condicio = " WHERE Cicle='ASIX' ORDER BY Codi DESC;";
         }
-        llista =sqLiteHelper.cargarLv(condicio);
+        llista = sqLiteHelper.cargarLv(condicio, llistaOfertes);
         CarregarLV();
     }
-    private void CarregarLV(){
-        if (llista==null) {
+
+    private void CarregarLV() {
+
+        if (llista == null) {
             Log.d("Arraylist", "No disposes de elements en la llista");
-            Toast.makeText(getApplicationContext(),"No disposes de registres en la llista",Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this,MainActivity.class));
+            Toast.makeText(getApplicationContext(), "No disposes de registres en la llista", Toast.LENGTH_SHORT).show();
+            listView.setAdapter(null);
         } else {
             adaptador = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, llista);
             listView.setAdapter(adaptador);
+           
         }
-
     }
+
+//    private OfertesTreball BuscarCoincidencies(int codi) {
+//        /*for (int i = 0; i < llistaOfertes.size(); i++) {
+//            if (codi == llistaOfertes.get(i).getCodi()) {
+//                num = i;
+//                break;
+//            }
+//        }*/
+//        int num=-1;
+//        for (OfertesTreball ot:llistaOfertes){
+//            if(codi==ot.getCodi()){
+//                num=ot.getCodi();
+//            }
+//        }
+//        if (num == -1) {
+//            return null;
+//        } else {
+//            return llistaOfertes.get(num);
+//        }
+//
+//
+//    }
 
 }
