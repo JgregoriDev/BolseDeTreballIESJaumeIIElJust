@@ -104,7 +104,6 @@ public class MainActivity extends MenuActivity {
 
     @Override
     protected void onPause() {
-//        sqLiteHelper=new SQLiteHelper(getApplicationContext());
         super.onPause();
         Toast.makeText(getApplicationContext(), "onPause", Toast.LENGTH_SHORT).show();
 
@@ -112,59 +111,8 @@ public class MainActivity extends MenuActivity {
             thread = new Thread();
             thread.start();
         }*/
-    /*    if (getIntent().getExtras() != null) {
-            String Nom = null;
-            String Email = null;
-            String Poblacio = null;
-            String Telefono = null;
-            String Cicle = null;
-            String Descripcio = null;
-//            ot = new OfertesTreball();
-            for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
-                if (key.equals("Nom")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
-                    Toast.makeText(getApplicationContext(), ""+Nom, Toast.LENGTH_SHORT).show();
 
-                            Nom = (String) value;
-//                    ot.setNom(nom);
-                }
-                if (key.equals("Email")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
-                    Email = (String) value;
-//                    ot.setEmail(Email);
-                }
-                if (key.equals("Poblacio")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
-                    Poblacio = (String) value;
-//                    ot.setPoblacio(Poblacio);
-                }
-                if (key.equals("Telefono")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
-                    Telefono = (String) value;
-//                    ot.setTelefono(Telefono);
-                }
-                if (key.equals("Cicle")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
-                    Cicle = (String) value;
-//                    ot.setCicle(Cicle);
-                }
-
-                if (key.equals("Descripcio")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
-                    Descripcio = (String) value;
-                    //ot.setDataNotificacio(Descripcio);
-                }
-
-            }
-            if (Nom != null) {
-
-                Date date = Calendar.getInstance().getTime();
-                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                String today = formatter.format(date);
-                ot = new OfertesTreball(Nom, Poblacio, Email, Cicle, today, Descripcio, Telefono);
-            }
-        }
+/*        }
         if (ot != null) {
 
 
