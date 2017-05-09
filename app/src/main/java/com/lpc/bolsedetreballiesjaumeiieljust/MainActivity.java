@@ -102,25 +102,7 @@ public class MainActivity extends MenuActivity {
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(getApplicationContext(), "onPause", Toast.LENGTH_SHORT).show();
 
-        /*if(thread == null) {
-            thread = new Thread();
-            thread.start();
-        }*/
-
-/*        }
-        if (ot != null) {
-
-
-            sqLiteHelper.Insertar(ot);
-            Intent intent = new Intent(MainActivity.this, LlistaOfertesActivity.class);
-            startActivity(intent);
-        }*/
-    }
 
    /* @Override
     public void run() {
