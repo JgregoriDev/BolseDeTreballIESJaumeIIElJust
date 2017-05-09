@@ -18,8 +18,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends MenuActivity {
-//    TextView text;
+    //    TextView text;
     private OfertesTreball ot;
+    private SQLiteHelper sqLiteHelper;
+    private Thread thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +38,81 @@ public class MainActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
-        String conf = "";
-        SQLiteHelper sqLiteHelper = new SQLiteHelper(getApplicationContext());
-      /*  text = (TextView) findViewById(R.id.tv);
-        text.setText("");
-//*/
+//        String conf = "";
+        sqLiteHelper = new SQLiteHelper(getApplicationContext());
+
         if (getIntent().getExtras() != null) {
+            String Nom = null;
+            String Email = null;
+            String Poblacio = null;
+            String Telefono = null;
+            String Cicle = null;
+            String Data = null;
+            String Descripcio = null;
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                if (key.equals("Nom")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Nom = (String) value;
+                }
+                if (key.equals("Email")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Email = (String) value;
+                }
+                if (key.equals("Poblacio")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Poblacio = (String) value;
+                }
+                if (key.equals("Telefono")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Telefono = (String) value;
+                }
+                if (key.equals("Cicle")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Cicle = (String) value;
+                }
+                if (key.equals("Dia") || key.equals("Data")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Data = (String) value;
+                }
+                if (key.equals("Descripcio")) {
+                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Descripcio = (String) value;
+                }
+
+            }
+            if (Nom != null) {
+
+                if (Data == null) {
+                    Date date = Calendar.getInstance().getTime();
+                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                    Data = formatter.format(date);
+                }
+
+
+                ot = new OfertesTreball(Nom, Poblacio, Email, Cicle, Data, Descripcio, Telefono);
+            }
+        }
+        if (ot != null) {
+            sqLiteHelper.Insertar(ot);
+            Intent intent = new Intent(MainActivity.this, LlistaOfertesActivity.class);
+            startActivity(intent);
+        }
+
+
+    }
+
+    @Override
+    protected void onPause() {
+//        sqLiteHelper=new SQLiteHelper(getApplicationContext());
+        super.onPause();
+        Toast.makeText(getApplicationContext(), "onPause", Toast.LENGTH_SHORT).show();
+
+        /*if(thread == null) {
+            thread = new Thread();
+            thread.start();
+        }*/
+    /*    if (getIntent().getExtras() != null) {
             String Nom = null;
             String Email = null;
             String Poblacio = null;
@@ -53,8 +124,9 @@ public class MainActivity extends MenuActivity {
                 Object value = getIntent().getExtras().get(key);
                 if (key.equals("Nom")) {
                     Log.d("Jack", "Key: " + key + " Value: " + value);
+                    Toast.makeText(getApplicationContext(), ""+Nom, Toast.LENGTH_SHORT).show();
 
-                    Nom = (String) value;
+                            Nom = (String) value;
 //                    ot.setNom(nom);
                 }
                 if (key.equals("Email")) {
@@ -85,7 +157,7 @@ public class MainActivity extends MenuActivity {
                 }
 
             }
-            if(Nom!=null){
+            if (Nom != null) {
 
                 Date date = Calendar.getInstance().getTime();
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -99,10 +171,23 @@ public class MainActivity extends MenuActivity {
             sqLiteHelper.Insertar(ot);
             Intent intent = new Intent(MainActivity.this, LlistaOfertesActivity.class);
             startActivity(intent);
+        }*/
+    }
+
+   /* @Override
+    public void run() {
+        Thread miHilo = Thread.currentThread();
+        while (miHilo == thread) {
+            try {
+                Thread.sleep(1000);
+                Log.d("Jack","Durmiendo 1s");
+                Toast.makeText(getApplicationContext(),"Durmiendo 1s",Toast.LENGTH_SHORT).show();
+            } catch (InterruptedException e) {
+            }
+
         }
 
-
-    }
+    }*/
 }
 
 

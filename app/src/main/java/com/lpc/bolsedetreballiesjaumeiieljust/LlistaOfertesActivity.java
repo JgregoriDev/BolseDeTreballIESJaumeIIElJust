@@ -17,6 +17,11 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.ArrayOfertesTreballs;
 import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
 
@@ -52,6 +57,7 @@ public class LlistaOfertesActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
+//        LlegirValorsFirebase();
         aot = new ArrayOfertesTreballs();
         llistaOfertes = aot.getOfertesTreballs();
         sqLiteHelper = new SQLiteHelper(getApplicationContext());
@@ -150,26 +156,35 @@ public class LlistaOfertesActivity extends MenuActivity {
         }
     }
 
-//    private OfertesTreball BuscarCoincidencies(int codi) {
-//        /*for (int i = 0; i < llistaOfertes.size(); i++) {
-//            if (codi == llistaOfertes.get(i).getCodi()) {
-//                num = i;
-//                break;
-//            }
-//        }*/
-//        int num=-1;
-//        for (OfertesTreball ot:llistaOfertes){
-//            if(codi==ot.getCodi()){
-//                num=ot.getCodi();
-//            }
-//        }
-//        if (num == -1) {
-//            return null;
-//        } else {
-//            return llistaOfertes.get(num);
-//        }
-//
-//
-//    }
+    private void LlegirValorsFirebase() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference().child("-KjZyP6e8VuvFIYlosQx");
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String valor = dataSnapshot.getValue(String.class);
+                Log.d("Jack",valor);
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

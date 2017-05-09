@@ -20,6 +20,7 @@ public class DadesOfertaActivity extends MenuActivity {
 
     private String Email;
     private String Telefono;
+    private String Poblacio;
     private OfertesTreball ot;
 
     @Override
@@ -52,7 +53,7 @@ public class DadesOfertaActivity extends MenuActivity {
         if (bundle != null) {
             final String Activity = bundle.getString("Activity");
             if (Activity.equals("MainActivity.class")) {
-                tv_codi.setVisibility(View.INVISIBLE);
+              /*  tv_codi.setVisibility(View.INVISIBLE);
                 tv_email.setVisibility(View.INVISIBLE);
                 tv_telefon.setVisibility(View.INVISIBLE);
                 tv_cicle.setVisibility(View.INVISIBLE);
@@ -60,7 +61,7 @@ public class DadesOfertaActivity extends MenuActivity {
                 tv_poblacio.setVisibility(View.INVISIBLE);
                 tv_descripcio.setVisibility(View.INVISIBLE);
                 String bundleString = bundle.getString("Nom");
-
+*/
 
             } else if (Activity.equals("LlistaOfertesActivity.class")) {
                 ot = bundle.getParcelable("OfertesTreball");
@@ -72,14 +73,21 @@ public class DadesOfertaActivity extends MenuActivity {
                         tv_nom.append(": " + ot.getNom());
                         if (ot.getEmail() != null) {
 
-                            tv_email.append(": " + ot.getEmail());
                             Email = ot.getEmail();
-                            tv_email.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    EnviarMail();
-                                }
-                            });
+                            if (Email.equals("null")) {
+
+                                tv_email.append(": No ens han donat");
+
+                            }else{
+                                tv_email.append(": " + ot.getEmail());
+                                tv_email.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        sendMail();
+                                    }
+                                });
+                            }
+
                         }
                         if (ot.getCicle() != null) {
                             tv_cicle.append(": " + ot.getCicle());
@@ -87,19 +95,30 @@ public class DadesOfertaActivity extends MenuActivity {
                         }
                         if (ot.getTelefono() != null) {
                             Telefono = ot.getTelefono();
-                            if(Telefono.equals("null")) {
+                            if (Telefono.equals("null")) {
+
+                                tv_telefon.append(": No ens han donat");
+
+                            }else{
                                 tv_telefon.append(": " + ot.getTelefono());
                                 tv_telefon.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        LlamarTelefono();
+                                        callNumberPhone();
                                     }
                                 });
-
                             }
+
                         }
                         if (ot.getPoblacio() != null) {
+                            Poblacio=ot.getPoblacio();
                             tv_poblacio.append(": " + ot.getPoblacio());
+                            tv_poblacio.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    LauchGMap();
+                                }
+                            });
                         }
                         if (ot.getDescripcio() != null) {
                             tv_descripcio.append("Descripcio: " + ot.getDescripcio());
@@ -122,7 +141,7 @@ public class DadesOfertaActivity extends MenuActivity {
     }
 
 
-    public void LlamarTelefono() {
+    public void callNumberPhone() {
         Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + ot.getTelefono()));
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -137,8 +156,16 @@ public class DadesOfertaActivity extends MenuActivity {
         startActivity(i);
     }
 
-    public void EnviarMail() {
+    public void sendMail() {
         Intent sendEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", ot.getEmail(), null));
         startActivity(Intent.createChooser(sendEmail, "Send email"));
     }
+    public void LauchGMap(){
+        Intent launchGMap= new Intent(Intent.ACTION_VIEW);
+        getIntent().setData(Uri.parse("geo:"+Poblacio));
+        Intent chooser=Intent.createChooser(launchGMap,"Launch maps");
+        startActivity(chooser);
+    }
+
+
 }

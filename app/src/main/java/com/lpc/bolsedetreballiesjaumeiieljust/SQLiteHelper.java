@@ -128,8 +128,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference().child("OfertaTreball");
         HashMap<String, String> hashMap = new HashMap<>();
-        String codi = String.valueOf(ot.getCodi());
-        hashMap.put(Codi, codi);
+            String codi = String.valueOf(ot.getCodi());
+        //hashMap.put(Codi, codi);
         hashMap.put(Nom, ot.getNom());
         hashMap.put(Telefon, ot.getTelefono());
         hashMap.put(Poblacio, ot.getPoblacio());
