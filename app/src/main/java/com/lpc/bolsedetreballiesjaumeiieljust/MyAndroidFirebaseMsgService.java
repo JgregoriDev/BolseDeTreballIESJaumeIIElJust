@@ -9,10 +9,16 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by lpc on 2/05/17.
@@ -20,16 +26,48 @@ import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
 
 public class MyAndroidFirebaseMsgService extends FirebaseMessagingService {
     ArrayMap<String, String> campsMissatge;
-
+    private String TAG="Jack";
+    private SQLiteHelper sqLiteHelper;
+    private OfertesTreball ot;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        campsMissatge = new ArrayMap<>();
-        campsMissatge = (ArrayMap<String, String>) remoteMessage.getData();
-        /*if(remoteMessage.getData() != null) {
-            Log.d("hola", "DATOS RECIBIDOS");
-            Log.d("hola", "Usuario: " + remoteMessage.getData().get("nom"));
-            Log.d("hola", "Estado: " + remoteMessage.getData().get("cognom"));
-        }*/
+
+
+        String Nom = null;
+        String Email = null;
+        String Poblacio = null;
+        String Telefono = null;
+        String Cicle = null;
+        String Data = null;
+        String Descripcio = null;
+        if (!remoteMessage.getData().isEmpty()){
+
+            Nom=remoteMessage.getData().get("Nom");
+            Email=remoteMessage.getData().get("Email");
+            Poblacio=remoteMessage.getData().get("Poblacio");
+            Telefono=remoteMessage.getData().get("Telefono");
+            Cicle=remoteMessage.getData().get("Cicle");
+            Descripcio=remoteMessage.getData().get("Descripcio");
+            Data=remoteMessage.getData().get("Data");
+
+        }
+        if (Nom!=null){
+            sqLiteHelper=new SQLiteHelper(getApplicationContext());
+
+            if (Data == null) {
+                Date date = Calendar.getInstance().getTime();
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                Data = formatter.format(date);
+            }
+
+            ot = new OfertesTreball(Nom, Poblacio, Email, Cicle, Data, Descripcio, Telefono);
+
+        }
+        if(ot!=null){
+            sqLiteHelper.Insertar(ot);
+
+
+        }
     }
 
     private void createNotification(String messageBody) {

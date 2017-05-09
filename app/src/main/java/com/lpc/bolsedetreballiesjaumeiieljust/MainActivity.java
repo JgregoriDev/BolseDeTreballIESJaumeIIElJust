@@ -21,7 +21,7 @@ public class MainActivity extends MenuActivity {
     //    TextView text;
     private OfertesTreball ot;
     private SQLiteHelper sqLiteHelper;
-    private Thread thread;
+    private boolean Notificacio = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MainActivity extends MenuActivity {
         });
 //        String conf = "";
         sqLiteHelper = new SQLiteHelper(getApplicationContext());
-
         if (getIntent().getExtras() != null) {
             String Nom = null;
             String Email = null;
@@ -52,31 +51,31 @@ public class MainActivity extends MenuActivity {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
                 if (key.equals("Nom")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
+//                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Nom = (String) value;
                 }
                 if (key.equals("Email")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
+//                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Email = (String) value;
                 }
                 if (key.equals("Poblacio")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
+//                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Poblacio = (String) value;
                 }
                 if (key.equals("Telefono")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
+//                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Telefono = (String) value;
                 }
                 if (key.equals("Cicle")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
+//                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Cicle = (String) value;
                 }
                 if (key.equals("Dia") || key.equals("Data")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
+//                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Data = (String) value;
                 }
                 if (key.equals("Descripcio")) {
-                    Log.d("Jack", "Key: " + key + " Value: " + value);
+//                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Descripcio = (String) value;
                 }
 
@@ -95,8 +94,7 @@ public class MainActivity extends MenuActivity {
         }
         if (ot != null) {
             sqLiteHelper.Insertar(ot);
-            Intent intent = new Intent(MainActivity.this, LlistaOfertesActivity.class);
-            startActivity(intent);
+
         }
 
 
@@ -104,20 +102,6 @@ public class MainActivity extends MenuActivity {
 
 
 
-   /* @Override
-    public void run() {
-        Thread miHilo = Thread.currentThread();
-        while (miHilo == thread) {
-            try {
-                Thread.sleep(1000);
-                Log.d("Jack","Durmiendo 1s");
-                Toast.makeText(getApplicationContext(),"Durmiendo 1s",Toast.LENGTH_SHORT).show();
-            } catch (InterruptedException e) {
-            }
-
-        }
-
-    }*/
 }
 
 

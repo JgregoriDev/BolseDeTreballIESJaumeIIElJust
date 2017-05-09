@@ -41,7 +41,7 @@ public class LlistaOfertesActivity extends MenuActivity {
     private ArrayList<String> llista;
     private ArrayAdapter adaptador;
     private String condicio = "";
-
+    Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,8 @@ public class LlistaOfertesActivity extends MenuActivity {
                         .setAction("Action", null).show();
             }
         });
-//        LlegirValorsFirebase();
+
+
         aot = new ArrayOfertesTreballs();
         llistaOfertes = aot.getOfertesTreballs();
         sqLiteHelper = new SQLiteHelper(getApplicationContext());
