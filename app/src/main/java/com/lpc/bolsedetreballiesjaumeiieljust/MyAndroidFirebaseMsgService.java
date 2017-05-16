@@ -68,6 +68,10 @@ public class MyAndroidFirebaseMsgService extends FirebaseMessagingService {
 
 
         }
+        campsMissatge = new ArrayMap<>();
+        campsMissatge = (ArrayMap<String, String>) remoteMessage.getData();
+
+        createNotification(remoteMessage.getNotification().getBody());
     }
 
     private void createNotification(String messageBody) {
@@ -76,8 +80,8 @@ public class MyAndroidFirebaseMsgService extends FirebaseMessagingService {
         PendingIntent resultIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Android Tutorial Point FCM Tutorial")
+                .setSmallIcon(R.drawable.photo)
+                .setContentTitle("Nova oferta de Treball")
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(notificationSoundURI)

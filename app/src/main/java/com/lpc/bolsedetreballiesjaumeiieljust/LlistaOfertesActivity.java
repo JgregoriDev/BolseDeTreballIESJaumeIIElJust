@@ -1,7 +1,6 @@
 package com.lpc.bolsedetreballiesjaumeiieljust;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,10 +21,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.ArrayOfertesTreballs;
 import com.lpc.bolsedetreballiesjaumeiieljust.Entitat.OfertesTreball;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class LlistaOfertesActivity extends MenuActivity {
@@ -36,12 +33,14 @@ public class LlistaOfertesActivity extends MenuActivity {
     private Button b_clear;
     private CheckBox cb_dam, cb_asix;
     private int num;
-    private ArrayOfertesTreballs aot;
+
     //    private ArrayList<OfertesTreball> llista;
     private ArrayList<String> llista;
+    private ArrayList<OfertesTreball> llistaOfertesTreballs;
     private ArrayAdapter adaptador;
     private String condicio = "";
     Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +58,6 @@ public class LlistaOfertesActivity extends MenuActivity {
         });
 
 
-        aot = new ArrayOfertesTreballs();
-        llistaOfertes = aot.getOfertesTreballs();
         sqLiteHelper = new SQLiteHelper(getApplicationContext());
         listView = (ListView) findViewById(R.id.listView);
         cb_dam = (CheckBox) findViewById(R.id.cb_dam);
@@ -91,38 +88,52 @@ public class LlistaOfertesActivity extends MenuActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 //Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
-                String n = listView.getItemAtPosition(position).toString();
-                String[] arrayValorsOt = new String[8];
-                arrayValorsOt = n.split("_");
+                String valors = listView.getItemAtPosition(position).toString();
+                String[] arrayValorsOt = new String[3];
+                arrayValorsOt = valors.split("\n");
+                String codilletres = arrayValorsOt[0];
+                String[] codill = new String[2];
+                codill = codilletres.split(":");
+                int codi = 0;
+                codi = Integer.parseInt(codill[1]);
 
-                int codi = Integer.parseInt(arrayValorsOt[0]);
-                String nom = arrayValorsOt[1];
-                String email = arrayValorsOt[2];
-                String telefono = arrayValorsOt[3];
-                String poblacio = arrayValorsOt[4];
-                String cicle = arrayValorsOt[5];
-                String data = arrayValorsOt[6];
-                String descripcio = arrayValorsOt[7];
-                OfertesTreball ot = new OfertesTreball(nom, poblacio, email, cicle, data, descripcio, telefono);
-                ot.setCodi(codi);
-
-                Toast.makeText(getApplicationContext(),"Codi:"+codi+" Nom:"+nom+" Poblacio:"+poblacio+" Telefono:"+telefono+" Curs:"+cicle+" Data:"+data+" Descripcio:"+descripcio,Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getApplicationContext(), "Codi:" + ot.getCodi() + " Nom:" + ot.getNom() + " Poblacio:" + ot.getPoblacio() + " Telefono:" + ot.getTelefono() + " Curs:" + ot.getCicle() + " Data:" + ot.getDataNotificacio() + " Descripcio:" + ot.getDescripcio(), Toast.LENGTH_SHORT).show();
-
-                if (ot == null) {
-                    Toast.makeText(getApplicationContext(), "Usuari incorrecte", Toast.LENGTH_LONG).show();
-                } else {
+                OfertesTreball ot = BuscarOfertesTreball(codi);
+                if (ot != null) {
+                    Toast.makeText(getApplicationContext(), "Trobat", Toast.LENGTH_SHORT);
                     Intent intent = new Intent(LlistaOfertesActivity.this, DadesOfertaActivity.class);
                     intent.putExtra("Nom", listView.getItemAtPosition(position).toString());
                     intent.putExtra("OfertesTreball", ot);
                     intent.putExtra("Activity", "LlistaOfertesActivity.class");
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "No s'ha trobat", Toast.LENGTH_SHORT);
+
                 }
             }
         });
 
+    }
+
+    private OfertesTreball BuscarOfertesTreball(int num) {
+        ArrayList<OfertesTreball> ofertesTreballs = sqLiteHelper.getOfertesTreballs();
+//        Log.d("Jack",""+ofertesTreballs.size());
+        OfertesTreball ot = null;
+        for (OfertesTreball ofertesTreball : ofertesTreballs) {
+//            Log.d("Jack",""+ofertesTreball.getCodi()+ofertesTreball.getNom()+ofertesTreball.getDataNotificacio());
+            if (num == ofertesTreball.getCodi()) {
+                ot = ofertesTreball;
+                break;
+            }
+        }
+        if (ot != null) {
+//            Log.d("Jack", "trobat");
+            return ot;
+
+        } else {
+//            Log.d("Jack", "no trobat");
+            return null;
+        }
     }
 
     private void OmplirArrayList() {
@@ -153,7 +164,7 @@ public class LlistaOfertesActivity extends MenuActivity {
         } else {
             adaptador = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, llista);
             listView.setAdapter(adaptador);
-           
+
         }
     }
 
@@ -164,7 +175,7 @@ public class LlistaOfertesActivity extends MenuActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String valor = dataSnapshot.getValue(String.class);
-                Log.d("Jack",valor);
+//                Log.d("Jack", valor);
             }
 
             @Override
@@ -188,4 +199,5 @@ public class LlistaOfertesActivity extends MenuActivity {
             }
         });
     }
+
 }

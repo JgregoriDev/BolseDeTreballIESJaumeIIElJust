@@ -1,5 +1,6 @@
 package com.lpc.bolsedetreballiesjaumeiieljust;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -32,13 +34,7 @@ public class DadesOfertaActivity extends MenuActivity {
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         tv_codi = (TextView) findViewById(R.id.tv_codi);
         tv_nom = (TextView) findViewById(R.id.tv_nom);
         tv_email = (TextView) findViewById(R.id.tv_email);
@@ -50,95 +46,131 @@ public class DadesOfertaActivity extends MenuActivity {
 
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            final String Activity = bundle.getString("Activity");
-            if (Activity.equals("MainActivity.class")) {
-              /*  tv_codi.setVisibility(View.INVISIBLE);
-                tv_email.setVisibility(View.INVISIBLE);
-                tv_telefon.setVisibility(View.INVISIBLE);
-                tv_cicle.setVisibility(View.INVISIBLE);
-                tv_data.setVisibility(View.INVISIBLE);
-                tv_poblacio.setVisibility(View.INVISIBLE);
-                tv_descripcio.setVisibility(View.INVISIBLE);
-                String bundleString = bundle.getString("Nom");
-*/
-
-            } else if (Activity.equals("LlistaOfertesActivity.class")) {
-                ot = bundle.getParcelable("OfertesTreball");
-                if (ot != null) {
-                    if (ot.getNom() != null) {
 
 
-                        tv_codi.append(": " + ot.getCodi());
-                        tv_nom.append(": " + ot.getNom());
-                        if (ot.getEmail() != null) {
+        ot = bundle.getParcelable("OfertesTreball");
+        if (ot != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    BorrarOfertaTreball(ot.getCodi());
+                }
+            });
 
-                            Email = ot.getEmail();
-                            if (Email.equals("null")) {
+            tv_codi.append(": " + ot.getCodi());
+            tv_nom.append(": " + ot.getNom());
+            if (ot.getEmail() != null) {
 
-                                tv_email.append(": No ens han donat");
+                Email = ot.getEmail();
+                if (Email.equals("null")) {
 
-                            }else{
-                                tv_email.append(": " + ot.getEmail());
-                                tv_email.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        sendMail();
-                                    }
-                                });
-                            }
+                    tv_email.append(": No ens han donat");
 
+                } else {
+                    tv_email.append(": " + ot.getEmail());
+                    tv_email.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendMail();
                         }
-                        if (ot.getCicle() != null) {
-                            tv_cicle.append(": " + ot.getCicle());
-
-                        }
-                        if (ot.getTelefono() != null) {
-                            Telefono = ot.getTelefono();
-                            if (Telefono.equals("null")) {
-
-                                tv_telefon.append(": No ens han donat");
-
-                            }else{
-                                tv_telefon.append(": " + ot.getTelefono());
-                                tv_telefon.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        callNumberPhone();
-                                    }
-                                });
-                            }
-
-                        }
-                        if (ot.getPoblacio() != null) {
-                            Poblacio=ot.getPoblacio();
-                            tv_poblacio.append(": " + ot.getPoblacio());
-                            tv_poblacio.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    LauchGMap();
-                                }
-                            });
-                        }
-                        if (ot.getDescripcio() != null) {
-                            tv_descripcio.append("Descripcio: " + ot.getDescripcio());
-
-                        }
-
-                        tv_data.append(": " + ot.getDataNotificacio());
-
-                    }
+                    });
                 }
 
-
-            } else {
-                tv_nom.setText("No hi ha informació");
             }
-        } else {
-            Toast.makeText(this, "No hay información", Toast.LENGTH_SHORT).show();
+            if (ot.getCicle() != null) {
+                if (ot.getCicle().equals("null")) {
+
+                    tv_cicle.append(": No ens han donat la informacio");
+
+                } else {
+                    tv_cicle.append(": " + ot.getCicle());
+                }
+
+            }
+            if (ot.getTelefono() != null) {
+                Telefono = ot.getTelefono();
+                if (Telefono.equals("null")) {
+
+                    tv_telefon.append(": No ens han donat");
+
+                } else {
+                    tv_telefon.append(": " + ot.getTelefono());
+                    tv_telefon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callNumberPhone();
+                        }
+                    });
+                }
+
+            }
+            if (ot.getPoblacio() != null) {
+                Poblacio = ot.getPoblacio();
+                if (Poblacio.equals("null")) {
+                    tv_poblacio.append(": No està registrat");
+
+                } else {
+                    tv_poblacio.append(": " + ot.getPoblacio());
+                    tv_poblacio.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                                    LauchGMap();
+                        }
+                    });
+                }
+            }
+            if (ot.getDescripcio() != null) {
+                if (ot.getDescripcio().equals("null")) {
+                    tv_descripcio.append(": No està registrat");
+
+                } else {
+                    tv_descripcio.append(": " + ot.getPoblacio());
+
+                }
+            }
+
+            tv_data.append(": " + ot.getDataNotificacio());
+
         }
-//
     }
+
+    private void BorrarOfertaTreball(int codi) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Confirmar");
+        builder.setMessage("Estàs segur de borrar l'informació?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing but close the dialog
+                SQLiteHelper sqLiteHelper=new SQLiteHelper(getApplicationContext());
+                sqLiteHelper.BorrarRegistre(ot.getCodi());
+                dialog.dismiss();
+                Intent intent=new Intent(DadesOfertaActivity.this,LlistaOfertesActivity.class);
+                intent.putExtra("Activity","DadesOfertaActivity");
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+//
 
 
     public void callNumberPhone() {
@@ -160,10 +192,11 @@ public class DadesOfertaActivity extends MenuActivity {
         Intent sendEmail = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", ot.getEmail(), null));
         startActivity(Intent.createChooser(sendEmail, "Send email"));
     }
-    public void LauchGMap(){
-        Intent launchGMap= new Intent(Intent.ACTION_VIEW);
-        getIntent().setData(Uri.parse("geo:"+Poblacio));
-        Intent chooser=Intent.createChooser(launchGMap,"Launch maps");
+
+    public void LauchGMap() {
+        Intent launchGMap = new Intent(Intent.ACTION_VIEW);
+        getIntent().setData(Uri.parse("geo:" + Poblacio));
+        Intent chooser = Intent.createChooser(launchGMap, "Launch maps");
         startActivity(chooser);
     }
 

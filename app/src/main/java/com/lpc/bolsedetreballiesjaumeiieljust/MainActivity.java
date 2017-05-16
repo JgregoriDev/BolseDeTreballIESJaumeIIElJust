@@ -51,7 +51,7 @@ public class MainActivity extends MenuActivity {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
                 if (key.equals("Nom")) {
-//                    Log.d("Jack", "Key: " + key + " Value: " + value);
+                         Log.d("Jack", "Key: " + key + " Value: " + value);
                     Nom = (String) value;
                 }
                 if (key.equals("Email")) {
@@ -81,27 +81,19 @@ public class MainActivity extends MenuActivity {
 
             }
             if (Nom != null) {
-
                 if (Data == null) {
                     Date date = Calendar.getInstance().getTime();
                     DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     Data = formatter.format(date);
                 }
-
-
                 ot = new OfertesTreball(Nom, Poblacio, Email, Cicle, Data, Descripcio, Telefono);
             }
         }
         if (ot != null) {
             sqLiteHelper.Insertar(ot);
-
+            startActivity(new Intent(MainActivity.this, LlistaOfertesActivity.class));
         }
-
-
     }
-
-
-
 }
 
 

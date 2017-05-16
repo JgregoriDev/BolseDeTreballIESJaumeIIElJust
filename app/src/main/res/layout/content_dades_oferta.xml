@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="phone"
-        android:text="Codi" />
+        android:text="Codi"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView11"
@@ -24,13 +25,28 @@
         android:visibility="invisible" />
 
     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible" />
+
+    <TextView
         android:id="@+id/tv_nom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nom" />
+        android:text="Nom"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -41,7 +57,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="email"
-        android:text="Email" />
+        android:text="Email"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView7"
@@ -51,12 +68,20 @@
         android:visibility="invisible" />
 
     <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible" />
+
+    <TextView
         android:id="@+id/tv_telefon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:linksClickable="true"
         android:autoLink="phone"
-        android:text="Telefon" />
+        android:linksClickable="true"
+        android:text="Telefon"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView9"
@@ -66,10 +91,18 @@
         android:visibility="invisible" />
 
     <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible" />
+
+    <TextView
         android:id="@+id/tv_poblacio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Poblacio" />
+        android:text="Poblacio"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView13"
@@ -79,10 +112,18 @@
         android:visibility="invisible" />
 
     <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible" />
+
+    <TextView
         android:id="@+id/tv_cicle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cicle" />
+        android:text="Cicle"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView15"
@@ -92,13 +133,29 @@
         android:visibility="invisible" />
 
     <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible" />
+
+    <TextView
         android:id="@+id/tv_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Data" />
+        android:text="Data"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView17"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/textView12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -107,5 +164,8 @@
     <TextView
         android:id="@+id/tv_descripcio"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Descripcio"
+        android:textSize="18sp" />
+
 </LinearLayout>

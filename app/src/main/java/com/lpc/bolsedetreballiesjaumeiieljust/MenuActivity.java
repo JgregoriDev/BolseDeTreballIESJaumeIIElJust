@@ -35,11 +35,10 @@ public class MenuActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Obrint LlistaOfertesActivity.class", Toast.LENGTH_SHORT).show();
                 intent = new Intent(this, LlistaOfertesActivity.class);
                 break;
-            case R.id.Insertar:
+            /*case R.id.Insertar:
                 Toast.makeText(getApplicationContext(), "Obrint InsertarActivity.class", Toast.LENGTH_SHORT).show();
                 intent = new Intent(this, InsertarActivity.class);
-                break;
-
+                break;*/
         }
 
         startActivity(intent);

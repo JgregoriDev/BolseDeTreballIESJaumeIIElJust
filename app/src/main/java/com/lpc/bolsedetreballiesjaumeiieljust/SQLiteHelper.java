@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "OfertesTreball";
     private static final int DATABASE_VERSION = 1;
-
+    private ArrayList<OfertesTreball>ofertesTreballs;
     private String TAG = "SQL";
     public static final String NomTabla = "OfertesTreball";
     public static final String Codi = "Codi";
@@ -48,6 +48,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        ofertesTreballs=new ArrayList<>();
     }
 
     @Override
@@ -76,9 +77,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         registro.put(Descripcio, ot.getDescripcio());
 
         bd.insert(NomTabla, null, registro);
-        Log.d("Jack", "Insert fet de manera correcta en SQLITE Nom"+ot.getNom()+" Email"+ot.getEmail()+"Telefono"+ot.getTelefono()+" Poblacio"+ot.getPoblacio()+" Cicle"+ot.getCicle()+" Descripcio"+ot.getDescripcio());
+        Log.d("Jack", "Insert fet de manera correcta en SQLITE Nom" + ot.getNom() + " Email" + ot.getEmail() + "Telefono" + ot.getTelefono() + " Poblacio" + ot.getPoblacio() + " Cicle" + ot.getCicle() + " Descripcio" + ot.getDescripcio());
 //        Log.d(TAG, "Insert fet de manera correcta en SQLITE");
-        InsertarValorsFirebase(ot);
+//        InsertarValorsFirebase(ot);
     }
 
     public ArrayList<String> cargarLv(String Condicio, ArrayList<OfertesTreball> lo) {
@@ -100,10 +101,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 OfertesTreball ot = new OfertesTreball(nom, Poblacio, Email, Cicle, Data, Descripcio, Telefon);
                 ot.setCodi(codi);
                 ot.setTelefono(Telefono);
-//                llista.add(ot.getCodi() + "_" + ot.getNom());
-                llista.add(ot.getCodi() + "_" + ot.getNom() + "_" + ot.getEmail() + "_" + ot.getTelefono() +
-                        "_" + ot.getPoblacio() + "_" + ot.getCicle() + "_" + ot.getDataNotificacio() +
-                        "_" + ot.getDescripcio());
+                llista.add("Codi:" + ot.getCodi() + "\nNom empresa:" + ot.getNom() + "\nPoblacio:" + ot.getPoblacio());
+                ofertesTreballs.add(ot);
+                /*llista.add(ot.getCodi() + " " + ot.getNom() + " " + ot.getEmail() + " " + ot.getTelefono() +
+                        " " + ot.getPoblacio() + " " + ot.getCicle() + " " + ot.getDataNotificacio() +
+                        " " + ot.getDescripcio());*/
 
             } while (c.moveToNext());
         }
@@ -128,8 +130,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference().child("OfertaTreball");
         HashMap<String, String> hashMap = new HashMap<>();
-            String codi = String.valueOf(ot.getCodi());
-        //hashMap.put(Codi, codi);
+        String codi = String.valueOf(ot.getCodi());
         hashMap.put(Nom, ot.getNom());
         hashMap.put(Telefon, ot.getTelefono());
         hashMap.put(Poblacio, ot.getPoblacio());
@@ -171,5 +172,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             }
         });
     }
+
+    public void BorrarRegistre(int codi) {
+        String sql = "DELETE FROM " + NomTabla + " WHERE " + Codi + "='" + codi+ "';";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(sql);
+    }
+    public ArrayList<OfertesTreball> getOfertesTreballs() {
+        return ofertesTreballs;
+    }
+
 
 }
