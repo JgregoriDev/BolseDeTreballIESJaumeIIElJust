@@ -101,7 +101,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 OfertesTreball ot = new OfertesTreball(nom, Poblacio, Email, Cicle, Data, Descripcio, Telefon);
                 ot.setCodi(codi);
                 ot.setTelefono(Telefono);
-                llista.add("Codi:" + ot.getCodi() + "\nNom empresa:" + ot.getNom() + "\nPoblacio:" + ot.getPoblacio());
+                llista.add(ot.getDataNotificacio()+" Codi:" + ot.getCodi() +""+ "\nNom empresa:" + ot.getNom() + "\nPoblacio:" + ot.getPoblacio());
                 ofertesTreballs.add(ot);
                 /*llista.add(ot.getCodi() + " " + ot.getNom() + " " + ot.getEmail() + " " + ot.getTelefono() +
                         " " + ot.getPoblacio() + " " + ot.getCicle() + " " + ot.getDataNotificacio() +
@@ -130,7 +130,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference().child("OfertaTreball");
         HashMap<String, String> hashMap = new HashMap<>();
-        String codi = String.valueOf(ot.getCodi());
+//        String codi = String.valueOf(ot.getCodi());
         hashMap.put(Nom, ot.getNom());
         hashMap.put(Telefon, ot.getTelefono());
         hashMap.put(Poblacio, ot.getPoblacio());

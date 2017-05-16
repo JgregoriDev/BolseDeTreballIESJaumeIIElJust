@@ -49,6 +49,8 @@ public class DadesOfertaActivity extends MenuActivity {
 
 
         ot = bundle.getParcelable("OfertesTreball");
+        Toast.makeText(getApplicationContext(),""+ot.getDescripcio(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),""+ot.getDescripcio(),Toast.LENGTH_SHORT).show();
         if (ot != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,7 +128,7 @@ public class DadesOfertaActivity extends MenuActivity {
                     tv_descripcio.append(": No està registrat");
 
                 } else {
-                    tv_descripcio.append(": " + ot.getPoblacio());
+                    tv_descripcio.append(": " + ot.getDescripcio());
 
                 }
             }

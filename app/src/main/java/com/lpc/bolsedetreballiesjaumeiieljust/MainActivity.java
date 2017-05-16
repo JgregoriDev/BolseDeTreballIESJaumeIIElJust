@@ -30,14 +30,7 @@ public class MainActivity extends MenuActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 //        String conf = "";
         sqLiteHelper = new SQLiteHelper(getApplicationContext());
         if (getIntent().getExtras() != null) {
@@ -51,7 +44,7 @@ public class MainActivity extends MenuActivity {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
                 if (key.equals("Nom")) {
-                         Log.d("Jack", "Key: " + key + " Value: " + value);
+//                         Log.d("Jack", "Key: " + key + " Value: " + value);
                     Nom = (String) value;
                 }
                 if (key.equals("Email")) {
@@ -66,7 +59,7 @@ public class MainActivity extends MenuActivity {
 //                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Telefono = (String) value;
                 }
-                if (key.equals("Cicle")) {
+                if (key.equals("Cicle") || key.equals("Curs")) {
 //                    Log.d("Jack", "Key: " + key + " Value: " + value);
                     Cicle = (String) value;
                 }
@@ -87,6 +80,7 @@ public class MainActivity extends MenuActivity {
                     Data = formatter.format(date);
                 }
                 ot = new OfertesTreball(Nom, Poblacio, Email, Cicle, Data, Descripcio, Telefono);
+//                Log.d("Jack",ot.getNom()+ot.getDescripcio());
             }
         }
         if (ot != null) {

@@ -61,7 +61,7 @@ public class MyAndroidFirebaseMsgService extends FirebaseMessagingService {
             }
 
             ot = new OfertesTreball(Nom, Poblacio, Email, Cicle, Data, Descripcio, Telefono);
-
+//            Log.d("Jack",ot.getNom()+ot.getDescripcio());
         }
         if(ot!=null){
             sqLiteHelper.Insertar(ot);

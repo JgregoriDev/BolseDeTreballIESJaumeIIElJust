@@ -15,7 +15,7 @@ public class MyAndroidFirebaseInstanceIdService extends FirebaseInstanceIdServic
     @Override
     public void onTokenRefresh() {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
+//        Log.d(TAG, "Refreshed token: " + refreshedToken);
     }
 
 }

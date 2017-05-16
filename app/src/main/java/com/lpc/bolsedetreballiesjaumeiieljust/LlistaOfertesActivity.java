@@ -48,14 +48,7 @@ public class LlistaOfertesActivity extends MenuActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
 
         sqLiteHelper = new SQLiteHelper(getApplicationContext());
@@ -158,7 +151,7 @@ public class LlistaOfertesActivity extends MenuActivity {
     private void CarregarLV() {
 
         if (llista == null) {
-            Log.d("Arraylist", "No disposes de elements en la llista");
+//            Log.d("Arraylist", "No disposes de elements en la llista");
             Toast.makeText(getApplicationContext(), "No disposes de registres en la llista", Toast.LENGTH_SHORT).show();
             listView.setAdapter(null);
         } else {
@@ -175,7 +168,7 @@ public class LlistaOfertesActivity extends MenuActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String valor = dataSnapshot.getValue(String.class);
-//                Log.d("Jack", valor);
+                Log.d("Jack", valor);
             }
 
             @Override
