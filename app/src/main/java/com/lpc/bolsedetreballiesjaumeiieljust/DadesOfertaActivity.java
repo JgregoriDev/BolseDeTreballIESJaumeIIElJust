@@ -49,8 +49,6 @@ public class DadesOfertaActivity extends MenuActivity {
 
 
         ot = bundle.getParcelable("OfertesTreball");
-        Toast.makeText(getApplicationContext(),""+ot.getDescripcio(),Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),""+ot.getDescripcio(),Toast.LENGTH_SHORT).show();
         if (ot != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,7 +66,7 @@ public class DadesOfertaActivity extends MenuActivity {
                 Email = ot.getEmail();
                 if (Email.equals("null")) {
 
-                    tv_email.append(": No ens han donat");
+                    tv_email.append(": No ens han donat el correu electrònic");
 
                 } else {
                     tv_email.append(": " + ot.getEmail());
@@ -80,15 +78,21 @@ public class DadesOfertaActivity extends MenuActivity {
                     });
                 }
 
+            }else {
+                tv_email.append(": No ens han donat el correu electrònic");
+
             }
             if (ot.getCicle() != null) {
                 if (ot.getCicle().equals("null")) {
 
-                    tv_cicle.append(": No ens han donat la informacio");
-
+                    tv_cicle.append(": No ens han donat la informacio el cicle");
                 } else {
                     tv_cicle.append(": " + ot.getCicle());
                 }
+
+            }else{
+                tv_cicle.append(": No ens han donat la informacio el cicle");
+                //tv_cicle.append(": No ens han donat la informacio el cicle");
 
             }
             if (ot.getTelefono() != null) {
@@ -107,6 +111,9 @@ public class DadesOfertaActivity extends MenuActivity {
                     });
                 }
 
+            }else{
+                    tv_telefon.append(": No ens han donat");
+
             }
             if (ot.getPoblacio() != null) {
                 Poblacio = ot.getPoblacio();
@@ -122,6 +129,9 @@ public class DadesOfertaActivity extends MenuActivity {
                         }
                     });
                 }
+            }else{
+
+                    tv_poblacio.append(": No està registrat la població");
             }
             if (ot.getDescripcio() != null) {
                 if (ot.getDescripcio().equals("null")) {
@@ -131,8 +141,11 @@ public class DadesOfertaActivity extends MenuActivity {
                     tv_descripcio.append(": " + ot.getDescripcio());
 
                 }
-            }
+            }else {
 
+                    tv_descripcio.append(": No està registrat");
+            }
+//            tv_descripcio.append(": " + ot.getDescripcio());
             tv_data.append(": " + ot.getDataNotificacio());
 
         }
@@ -148,11 +161,11 @@ public class DadesOfertaActivity extends MenuActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
-                SQLiteHelper sqLiteHelper=new SQLiteHelper(getApplicationContext());
+                SQLiteHelper sqLiteHelper = new SQLiteHelper(getApplicationContext());
                 sqLiteHelper.BorrarRegistre(ot.getCodi());
                 dialog.dismiss();
-                Intent intent=new Intent(DadesOfertaActivity.this,LlistaOfertesActivity.class);
-                intent.putExtra("Activity","DadesOfertaActivity");
+                Intent intent = new Intent(DadesOfertaActivity.this, LlistaOfertesActivity.class);
+                intent.putExtra("Activity", "DadesOfertaActivity");
                 startActivity(intent);
             }
         });
